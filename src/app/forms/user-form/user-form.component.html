@@ -1,0 +1,31 @@
+<h1 class="h4">{{user.id>0?'Редактирование пользователя':'Добавление пользователя'}}</h1>
+<div class="alert alert-danger" *ngIf="error.length">
+    {{ error }} <a routerLink="/user/list">перейти на главную</a>
+</div>
+<form class="row" (ngSubmit)="user.id>0?onSubmitedUpdateUser():onSubmitedNewUser()" #userForm="ngForm" *ngIf="!error.length">
+    <div class="col-12 col-md-6 form-group">
+        <label for="name">Имя</label>
+        <input type="text" #name="ngModel" id="name" name="name" class="form-control" [(ngModel)]="user.name" minlength="2" required>
+        <span class="invalid-feedback" *ngIf="!name.valid || !name.pristine">Поле "Имя" должно содержать минимум 2 символа!</span>
+    </div>
+    <div class="col-12 col-md-6 form-group">
+        <label for="surname">Фамилия</label>
+        <input type="text" #surname="ngModel" id="surname" name="surname" class="form-control" [(ngModel)]="user.surname" minlength="2" required>
+        <span class="invalid-feedback" *ngIf="!surname.valid || !surname.pristine">Поле "Фамилия" должно содержать минимум 2 символа!</span>
+    </div>
+    <div class="col-12 col-md-6 form-group">
+        <label for="email">Email</label>
+        <input type="text" #email="ngModel" id="email" name="email" class="form-control" [(ngModel)]="user.email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" required>
+        <span class="invalid-feedback" *ngIf="!email.valid || !email.pristine">Поле "Email" должно быть заполнено верно test@mail.ru!</span>
+    </div>
+    <div class="col-12 col-md-6 form-group">
+        <label for="telephone">Телефон</label>
+        <input type="text" #telephone="ngModel" id="telephone" name="telephone" class="form-control" [(ngModel)]="user.telephone"
+            prefix="+38 " mask="(000)-000-00-00" [dropSpecialCharacters]="false" minlength="19" required>
+        <span class="invalid-feedback" *ngIf="!telephone.valid || !telephone.pristine">Поле "Телефон" должно быть заполнено верно!</span>
+    </div>
+    <div class="col-12">
+        <button type="button" class="btn btn-light float-left" (click)="cleanForm(); userForm.reset()">Очистить</button>
+        <button type="submit" class="btn btn-success float-right" [disabled]="!userForm.form.valid">Сохранить</button>
+    </div>
+</form>
